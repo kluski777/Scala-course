@@ -1,0 +1,68 @@
+object Main {
+  def main(args: Array[String]): Unit = {
+  	val n1 = List(1,2,3)
+		val n2 = List(10,20,30)
+		val n3 = List(100,30,40)
+		val n4 = List(200,50)
+		//println(fcn1(rev(List(n1,n2,n3,n4))))
+  	val fi1 = new Angle(1.5)
+  	val fi2 = new Angle(2.5)
+  	val fi3 = fi1+fi2
+  	println(fi1.angle_ + " "+ fi2.angle_ +" "+fi3.angle_)
+		// result: Angle=1.5 Angle=2.5 Angle=-2.2831853071795862
+	}
+	
+	@scala.annotation.tailrec def fcn1(in:List[List[Int]],newa:List[Int] = List()): List[Int] = {
+		 if(in.isEmpty)
+			newa
+		else
+			fcn1(in.tail,conc(conc(in.head),newa))
+	}//concatenates many lists
+	
+	@scala.annotation.tailrec def conc(in:List[Int],out:List[Int]=List()): List[Int] = {
+		if(in.isEmpty)
+			out
+		else{
+			conc(in.tail,in.head::out)
+		}
+	}
+
+	@scala.annotation.tailrec def rev(in:List[List[Int]],out:List[List[Int]]=List(List())):List[List[Int]] = {
+		if(in.isEmpty)
+			out
+		else
+			rev(in.tail,in.head::out)
+	}
+}
+					 
+class Angle(kat:Double){
+	private var angle:Double = Angle.f1(kat)
+	def angle_ = this.angle
+	def +(a:Angle): Angle = new Angle(this.angle_ + a.angle_)
+	def -(a:Angle): Angle = this + new Angle(-a.angle_)
+	def *(a:Angle): Angle = new Angle((this.angle_)*(a.angle_))
+	def /(a:Angle): Angle = new Angle((this.angle_)/(a.angle_))
+	def printang = print("The angle is equal to " + this.angle)
+}
+
+object Angle{
+	def f1(x:Double): Double = {
+		if(x < 1.57 && x > -1.57) // pi/2
+			x
+		else if(x>0)
+			f1(x-3.14)
+		else
+			f1(x+3.14)
+	}
+	def apply(n:Double) = new Angle(n) //favtory method
+}
+
+/*
+The challenge of the second exercise is to write Angle functional class. 
+It should describe the angular distance. The allowed range is between -pi and +pi.
+That means whenever the angle with the value > +pi is requested the wrapping should happen.
+Operations like, +, -, * by Double, / by Double need to be supported.
+The class needs a companion object implementing factory method.
+
+  import geo._
+*/

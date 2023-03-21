@@ -1,0 +1,33 @@
+object Main {
+  def main(args: Array[String]): Unit = {
+    function1(args)
+	exc2(50, i=1)
+  }
+	def function1(args: Array[String]): Unit={
+		var size: Int = args.size
+		printer(size, args, 0)
+	}
+	def printer(i: Int, args: Array[String], iter: Int){
+		if(iter < i ){
+			if(iter == 0)
+				printf("%d ",i)
+			printf("%s ",args(iter))
+			printer(i, args, iter+1)
+		}
+		else
+			return
+	}
+	//printf >>>> inne printy
+	def print80(args: String, leng:Int): Unit={
+		println()
+	}
+	def exc2(input: Int, square: Int=1,i:Int): Unit = {
+		if(i==square*square){
+			exc2(input,square+1,i+1)			
+		} //check if it's not a square
+		else if(i<=input){
+			printf("%d ",i)
+			exc2(input,square,i+1)
+		}
+	}
+}

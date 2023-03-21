@@ -1,0 +1,28 @@
+object Main {
+  def main(args: Array[String]): Unit = {
+    val x = Lzy {println("start 13"); 13}
+    println("constructed Lzy x")
+		val y = x.flatMap( x => Lzy(x+7))
+    println("constructed Lzy y")
+		val z = y.flatMap( x => Lzy(x/2)) // note type change
+    println("constructed Lzy z")
+    println(z.eval)
+  }
+}
+
+class Lzy[T](val x:T,val fcnStored:T=>Lzy[T]){
+	def flatMap[U](fcn:U=>Lzy[U]):Lzy[U]={
+		fcn match{
+			case _:(T=>Lzy[T]) => Lzy[T](this.eval,fcn)
+			case _:(Double=>Lzy[Double]) => Lzy[Double](this.eval.toDouble,fcn)
+			case _ => println("Different type, nothing changes"); Lzy[T](x,fcnStored)
+		}
+	}
+	override def toDouble:Double=x.toDouble
+	def eval:T=fcnStored(x)
+}
+
+object Lzy{
+	def apply[T](x:T)=new Lzy[T](x)
+	def apply[T](x:T,y:(T=>Lzy[T]))=new Lzy[T](x,y)
+}

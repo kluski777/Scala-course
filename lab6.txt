@@ -1,0 +1,109 @@
+object Main {
+  def main(args Array[String]) Unit = {
+     val car1 = new Car(0, 0)
+		 println(car1)
+		 val car2 = new Car(1, 0)
+		 println(car2)
+		 val betterCar = new Car(0,0) with IntRichMoves
+		 println(betterCar)
+		 betterCar.up()
+		 println(betterCar)
+		 betterCar.right(3)
+		 println(betterCar)
+		 betterCar.down(5)
+		 println(betterCar)
+		 betterCar.left(5)
+		 println(betterCar)
+		 val runner = new Horse( (1,1) ) with IntRichMoves
+		 println(runner)
+		 runner.here(betterCar)
+		 println(runner)
+		 runner.zero
+		 println(runner)
+		val a TwistedMonoPair[A] = TwistedMonoPair[A](new B(7), new A)
+  	println(a(0))
+  	println(a(1))
+  	println(a)
+		val b TwistedMonoPair[A] = TwistedMonoPair[B](new B(9), new C(77))  covariantness
+  	println(b)
+		val d1 = b.replace[A](0)(new A)  converts to TwistedMonoPair[A]
+  	println(d1) why i don't see anything
+		val c TwistedMonoTuple[A] = new TwistedMonoTuple[B](new B(9), new A) doesnt work as expected
+		val d2 = b.replace[A](1)(new A)  replacing 2nd element
+  	println(d2)
+  }
+}
+
+trait IntRichMoves{
+	def movex(aInt)Unit
+	def movey(aInt)Unit
+	def setx(aInt)Unit
+	def sety(aInt)Unit
+	def getxInt
+	def getyInt
+	def up(aInt=1)Unit= movey(a)
+	def down(aInt=1)Unit= movey(-a)
+	def right(aInt=1)Unit= movex(a)
+	def left(aInt=1)Unit= movex(-a)
+	def zeroUnit={
+		setx(0)
+		sety(0)
+	}
+	def here(aCar)Unit = {  setx(a.getx); sety(a.gety) doesn't work
+		setx(a.getx)
+		sety(a.gety)
+	}
+}
+
+class Car ( var xpos Int , var ypos Int ) {
+override def toString = Car x +xpos.toString +  y+ypos.toString
+def movex(aInt)Unit= xpos += a
+def movey(aInt)Unit= ypos += a
+def setx(aInt)Unit= xpos = a
+def sety(aInt)Unit= ypos = a
+def getxInt= xpos
+def getyInt= ypos
+}
+
+class Horse ( var mypos (Int, Int)) {
+override def toString = Horse x +mypos._1.toString +  y+mypos._2.toString
+def movex(aInt)Unit= mypos = (mypos._1+a,mypos._2)
+def movey(aInt)Unit= mypos = (mypos._1,mypos._2+a)
+def setx(aInt)Unit= mypos = (a,mypos._2)
+def sety(aInt)Unit= mypos = (mypos._1,a)
+def getxInt= mypos._1
+def getyInt= mypos._2
+}
+
+class A{
+  override def toString String = A
+}
+
+class B( val x Int) extends A{
+  override def toString String = B+x.toString
+}
+
+class C( x Int) extends B(x){
+  override def toString String = C+x.toString
+}
+
+class TwistedMonoPair[+T](val aT,val bT){
+	override def toStringString = a.toString + , second elemnt inside container  + b.toString
+	def replace[UT](elemInt)(xU)TwistedMonoPair[U]={
+		elem match{
+			case 0 = new TwistedMonoPair[U](x,this.b)
+			case 1 = new TwistedMonoPair[U](this.a,x)
+		}
+	}
+	def apply(elemInt)T={
+		elem match{
+			case 0 = a
+			case 1 = b
+			case _ = print(Wrong number entered); a
+		}
+	}
+}
+
+object TwistedMonoPair{
+	def apply[T](aT,bT) TwistedMonoPair[T] = new TwistedMonoPair[T](a,b)
+}

@@ -1,0 +1,41 @@
+object Main {
+  def main(args: Array[String]): Unit = {
+    val expr =Mult(Sub(Mult(Add(1,2),Add(1,3)),2),2)
+		println(simplify(expr))
+		val r1 = KWF(45).flatMap( x => KWF(x+7) ).flatMap( x => KWF(x*2));
+  }
+	def simplify[T](arg:T):Double={
+		arg match{
+			case Mult(a,b) => simplify(a)*simplify(b)
+			case Add(a,b) => simplify(a)+simplify(b)
+			case Div(a,b) => simplify(a)/simplify(b)
+			case Sub(a,b) => simplify(a)-simplify(b)
+			case a:Int => a
+			case _ => println("Something went bad"); 3.14
+		}
+	}
+}
+
+class KWF(a:Double,encounter:Int=0){
+	val functionContainer:(Double=>KWF)={
+		KWF(a)
+	}
+	def geta:Double=a
+	def failed=encounter!=0
+	def flatMap[T](arg:Double=>T):Unit={
+		arg match{
+			case weHope:(Double=>KWF) if encounter != 0 => functionContainer compose weHope
+			case _ => throw new ArithmeticException("divide by 0") 
+		}
+	}
+	def weFailed:KWF=KWF(a,encounter+1)
+}
+
+object KWF{
+	def apply(a:Double,encouner:Int=0):KWF=new KWF(a,encouner)
+}
+
+case class Mult[T,U](a:T,b:U)
+case class Add[T,U](a:T,b:U)
+case class Div[T,U](a:T,b:U)
+case class Sub[T,U](a:T,b:U)

@@ -1,0 +1,41 @@
+/*
+PRZECZYTAJ DOL!!!
+*/
+
+
+object Main {
+  def main(args: Array[String]): Unit = {
+    println("Greatere than function: " + gt(4)(4))
+		println("Second: " + op(mult, (2,3)))
+		val h = composer(percentAwayFromClosestInt,isqrt)
+		println(s"Composer: " + h(4))
+		val x= List(-3,10,90,89,12,5,-5,12,-16,9908)
+		val mm = minmax(x)
+		println(mm)
+  } 
+	import java.lang.Math.sqrt
+	def gt(x:Int)(y:Int): Boolean = x>y
+	def mult(x:Int, y:Int): Int = x*y
+	def op(f:(Int,Int) => Int, tuple:(Int,Int)): Int = f(tuple._1, tuple._2)
+	def isqrt(arg:Int): Double = java.lang.Math.sqrt(arg.toDouble)
+	def percentAwayFromClosestInt(x:Double) = ((x-x.floor).max(x-x.ceil)).toInt * 100
+	def composer(f1:(Double) => Int, f2:(Int) => Double): (Int) => Int = (f1 compose f2);
+	def minmax(x:List[Int]): Tuple2[Int,Int] = {
+		def Recursive(i:Int=0,max:Int = x.head, min:Int = x.head): Tuple2[Int,Int] = {
+			println("max "+max+" min "+min+" x.tail " + x.tail(i) + " iterator " + i + " x.size " + x.size)
+			if(x.tail(i) > max && i < x.size-2)
+				Recursive(i+1,x.tail(i),min)
+			else if(x.tail(i) <= min && i < x.size-2)
+				Recursive(i+1,max,x.tail(i))
+			else if(i < x.size-2)
+        Recursive(i+1,max,min)
+			else if( x.tail(i) > max )
+				(min,x.tail(i))
+			else if( x.tail(i) < min )
+				(x.tail(i),max)
+			else 
+				(min,max)
+		}
+		Recursive()
+	} // jeszcze pierwszu element
+}

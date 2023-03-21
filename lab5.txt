@@ -1,0 +1,57 @@
+object Main {
+  def main(args: Array[String]): Unit = {
+		// println(new X("abra ka dabra",50))
+		// println(new X("abra ka dabra",30))
+		// println(new X("abra ka dabra",20))
+	}
+
+}
+
+class Container[+T](val v:T){
+	def get():T = v
+}
+
+class A{
+	override def toString: String = "A"
+}
+
+class B(val x:Int) extends A{
+	override def toString: String = "B: "+x.toString
+}
+
+class C(x:Int) extends B(x){
+	override def toString: String = "C: "+x.toString
+}
+
+class StringWrap(val text:String){
+	override def toString = text
+}
+
+trait Capitalisation{
+	override def toString = super.toString.toUpperCase;  
+}
+
+trait PageStretch{
+	def getllen:Int //DZIALA!!!!! O tą funkcję chodzi trzeba schemat zapamiętać!
+	override def toString = {	
+		var sum:String = ""
+		val lancuch = super.toString.split(" ");
+		val liczba = (getllen.toDouble/lancuch.size.toDouble).toInt
+		for(i <- 0 until lancuch.size){
+			sum = sum + lancuch(i)
+			for( j <- 0 until liczba)
+				sum = sum + " "
+		}
+		sum
+	} 
+}
+
+
+// Klasa która jest rozszerzana jest widzi zmienne klasy która ją rozszerza, super tyczy się odwołania do klasy w prawo tak jakby
+class X(override val text:String, val llen: Int) extends StringWrap(text) with Capitalisation with PageStretch{
+	def getllen:Int = llen
+}
+
+
+
+//nad super keyword keywordem trzeba popracowac

@@ -1,0 +1,56 @@
+object Main {
+  def main(args: Array[String]): Unit = {
+    val g = new Grass()
+		val h = new Hay()
+		val c1 = new Cow("cow1")
+		val c2 = new Cow("cow2")
+		val wolf = new Wolf("bad one")
+		c1.eat(g)
+		c2.eat(h) // also ok
+		wolf.eat(c1) // ok
+		//c1.eat(c2) // can not compile
+		val zm=List( ("John", "Doe", 23, "male"), ("Joan", "Doe", 23, "female"), ("Steve", "Jenkins", 24, "male"), ("Eva", "Robinson", 25, "female"), ("Ben", "Who", 22, "male"), ("Janet", "Reed", 21, "female"), ("Rob", "Jenkins", 26, "male"), ("Ella", "Dawson", 27, "female") )
+  	val males = zm collect({ case x if x._4 == "male" => x})
+		val females = zm collect({ case x if x._4 == "female" => x})
+		val above23 = zm collect({ case x if x._3>=23 => x._1})
+		//val JoeJohn:Boolean = zm exists(_._1 == "Joe") && zm exists(_._1 == "John")
+		// Joe and John to be done
+		val olderthan20 = zm.forall(_._3>20)
+		val names_and_age = zm collect({ case x => (x._1,x._3)})
+		val oldest = zm.maxBy(_._3)
+		val byAge = zm.groupBy(_._3) //not sure result is strange
+  	val youngerThan23 = zm.collect({case x if x._3 < 23 => x}) //is that the point of the excercise?
+		val olderThan23 = zm.collect({case x if x._3 < 23 => x})
+		val youngest = zm.minBy(_._3)
+		val malesandfemales = males == females
+		val above23dropWhile = zm.sortBy(_._3).dropWhile(_._3<23) // doesnt work includes 21 y/o
+		// do not have before 23
+	}
+}
+
+abstract class Animal{
+	type T<:Food
+	def eat(a:T):Unit
+	override def toString:String
+}
+class Cow(val name:String) extends Animal with Food_Wolf_Can_Eat{
+	type T = Food_Cow_Can_Eat
+	override def toString="cow"
+	def eat(a:T):Unit=println("Cow eats "+ a)
+}
+class Wolf(val name:String) extends Animal{
+	type T = Food_Wolf_Can_Eat
+	def eat(a:T):Unit=println("Wolf eats "+ a)
+	override def toString="wolf"
+}
+trait Food{
+	override def toString:String
+}
+trait Food_Wolf_Can_Eat extends Food{} 
+trait Food_Cow_Can_Eat extends Food{}
+class Hay() extends Food_Cow_Can_Eat{
+	override def toString="hay"
+}
+class Grass() extends Food_Cow_Can_Eat{
+	override def toString="grass"
+}

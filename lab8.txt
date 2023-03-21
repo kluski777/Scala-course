@@ -1,0 +1,31 @@
+object Main {
+  def main(args: Array[String]): Unit = {
+    val in = List(List(1,2,3,4),List(5,0,-1,7),List(-1, 51, 1,0),List(0,0,7,7))
+		println("Max number "+in.flatten.max)
+		println("Collection containing the biggest number: "+in.reduce((x,y)=> if(x.max>y.max) x; else y))
+		println("Collection of biggest numbers in each collection: "+in.collect(_.max))
+		println("Indicate function: "+indicate(in,{case x if(x>0) => true}))
+		
+		
+		val data = List( Map("name" -> "Jan", "fname" -> "Kowalski", "age" -> "45"),Map("company" -> "ABB", "origin" -> "Sweden"),Map("name" -> "Katarzyna", "fname" -> "Nowak", "age" -> "45"),Map("company" -> "F4", "origin" -> "Poland"),List("Cos", "innego"),Map("company" -> "Salina Bochnia", "origin" -> "Poland"),Map("company" -> "AGH", "origin" -> "Poland"),Map("name" -> "Krzysztof", "fname" -> "Krol", "age" -> "14"))
+		
+  }
+	
+	def indicate(in:List[List[Int]],fcn:PartialFunction[Int,Boolean]):List[Boolean]={
+		return in.flatten.collect(fcn)
+	}
+	
+	// def extr(data:List[Map[Any]])={
+	// 	while(!data.isEmpty){
+	// 		data.head match{
+	// 			case _:Map[] =>
+	// 		}
+	// 	}
+	// }
+}
+
+class Person(val x:String,val y:String,val z:String){
+	def printer=println(s"Person($x,$y,$z)")
+}
+
+class Company(val x:String,val y:String)
